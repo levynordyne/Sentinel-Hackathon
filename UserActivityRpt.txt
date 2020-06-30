@@ -1,0 +1,246 @@
+\\Log Analytics to Logs
+UserReportHackathon_CL
+| where TimeGenerated > ago(30d)
+| project-rename SubmissionTime=submitDate_s
+| project-rename ContactType=r75907bcab2cd4ac88ae4404a8f7bee71_s
+| project-rename ContactDate=r2870e6ce8574463e9bb39a38fd4df009_s
+| project-rename UserFreeInput=r4206159e2c0d48c785ab6a393a7c0955_s
+| project-rename InsiderOutsider=rfffed240ef1942bc8289426a26d8c07c_s
+| project-rename Organization=r24f206798b3c492db1bbef62928ab6ec_s
+| project-rename Purpose=r71afb1cb230b4ec1b93fab1176160a63_s
+| project-rename PhishedFor=ra2e3060e8043484a889f11ec4551b56f_s
+| project-rename Email=rfcaf6ba1f3914b0388b922f48e33f4f5_s
+| project-rename AttackTime=rac1148b2834a4709b2b3f3960962d1b2_s
+| project-away Computer
+| project-away RawData
+| project-away Type
+| project-away _ResourceId
+| project-away SourceSystem
+| project-away MG
+| project-away ManagementGroupName
+\\Incident creation
+UserActivityRpt
+| where Severity contains "Critical"
+\\Workbook Visual Representation
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "UserActivityRpt_CL\r\n| project-rename Context=r75907bcab2cd4ac88ae4404a8f7bee71_s,\r\nIncident_Date=r2870e6ce8574463e9bb39a38fd4df009_s,\r\nUser_Input=r4206159e2c0d48c785ab6a393a7c0955_s,\r\nInsider_Threat=rfffed240ef1942bc8289426a26d8c07c_s,\r\nOrganization=r24f206798b3c492db1bbef62928ab6ec_s,\r\nReason=r71afb1cb230b4ec1b93fab1176160a63_s,\r\nRequested_Data=ra2e3060e8043484a889f11ec4551b56f_s,\r\nContact_TOD=rac1148b2834a4709b2b3f3960962d1b2_s,\r\nSeverity=r33635b738c3c43e5a2bf2df3ca52bf30_s,\r\nContact_Request=re709730e0cd4458687098040ee7424c0_s\r\n| project-away Computer\r\n| project-away RawData\r\n| project-away Type\r\n| project-away _ResourceId\r\n| project-away SourceSystem\r\n| project-away MG\r\n| project-away ManagementGroupName\r\n| project-away TenantId",
+        "size": 1,
+        "title": "30 Day Summary",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "customWidth": "100",
+      "name": "query - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "UserActivityRpt\n| summarize Hits=count() by Severity",
+        "size": 1,
+        "title": "Severity",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "piechart",
+        "chartSettings": {
+          "createOtherGroup": null,
+          "seriesLabelSettings": [
+            {
+              "seriesName": "Critical",
+              "color": "red"
+            },
+            {
+              "seriesName": "High",
+              "color": "orange"
+            },
+            {
+              "seriesName": "Medium",
+              "color": "yellow"
+            },
+            {
+              "seriesName": "Low",
+              "color": "green"
+            }
+          ]
+        }
+      },
+      "customWidth": "35",
+      "name": "query - 2"
+    },
+    {
+      "type": 10,
+      "content": {
+        "chartId": "workbook3d0759a2-6fc0-454e-8126-3d983126c61c",
+        "version": "MetricsItem/2.0",
+        "size": 1,
+        "chartType": 2,
+        "metricScope": 0,
+        "resourceIds": [
+          "/subscriptions/338ca753-a1a6-498e-ab21-0937a2d279b0/resourceGroups/SentinelCP16/providers/Microsoft.Logic/workflows/UserFormReport"
+        ],
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "resourceType": "microsoft.logic/workflows",
+        "metrics": [
+          {
+            "namespace": "microsoft.logic/workflows",
+            "metric": "microsoft.logic/workflows--RunsCompleted",
+            "aggregation": 1,
+            "splitBy": null
+          }
+        ],
+        "title": "Submissions",
+        "gridFormatType": 1,
+        "tileSettings": {
+          "showBorder": false,
+          "titleContent": {
+            "columnMatch": "Name",
+            "formatter": 13
+          },
+          "leftContent": {
+            "columnMatch": "Value",
+            "formatter": 12,
+            "formatOptions": {
+              "palette": "auto"
+            },
+            "numberFormat": {
+              "unit": 17,
+              "options": {
+                "maximumSignificantDigits": 3,
+                "maximumFractionDigits": 2
+              }
+            }
+          }
+        },
+        "graphSettings": {
+          "type": 0,
+          "topContent": {
+            "columnMatch": "Subscription",
+            "formatter": 1
+          },
+          "centerContent": {
+            "columnMatch": "Value",
+            "formatter": 1,
+            "numberFormat": {
+              "unit": 17,
+              "options": {
+                "maximumSignificantDigits": 3,
+                "maximumFractionDigits": 2
+              }
+            }
+          }
+        },
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Subscription",
+              "formatter": 5
+            },
+            {
+              "columnMatch": "Name",
+              "formatter": 13,
+              "formatOptions": {
+                "linkTarget": "Resource"
+              }
+            },
+            {
+              "columnMatch": "Metric",
+              "formatter": 1
+            },
+            {
+              "columnMatch": "Aggregation",
+              "formatter": 5
+            },
+            {
+              "columnMatch": "Value",
+              "formatter": 1
+            },
+            {
+              "columnMatch": "Timeline",
+              "formatter": 9
+            }
+          ],
+          "rowLimit": 10000
+        }
+      },
+      "customWidth": "65",
+      "name": "metric - 2",
+      "styleSettings": {
+        "progressStyle": "squares"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "UserActivityRpt\r\n| summarize Hits=count() by Context",
+        "size": 1,
+        "title": "Reports by Context",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "barchart",
+        "tileSettings": {
+          "showBorder": false,
+          "titleContent": {
+            "columnMatch": "Context",
+            "formatter": 1
+          },
+          "leftContent": {
+            "columnMatch": "Hits",
+            "formatter": 12,
+            "formatOptions": {
+              "palette": "auto"
+            },
+            "numberFormat": {
+              "unit": 17,
+              "options": {
+                "maximumSignificantDigits": 3,
+                "maximumFractionDigits": 2
+              }
+            }
+          }
+        }
+      },
+      "customWidth": "50",
+      "name": "query - 3"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "UserActivityRpt\r\n| summarize Hits=count() by Contact_TOD",
+        "size": 1,
+        "title": "Contact Time of Day",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "barchart"
+      },
+      "customWidth": "50",
+      "name": "query - 4"
+    }
+  ],
+  "fallbackResourceIds": [
+    "/subscriptions/338ca753-a1a6-498e-ab21-0937a2d279b0/resourcegroups/sentinelcp16/providers/microsoft.operationalinsights/workspaces/useractivityrpt"
+  ],
+  "fromTemplateId": "sentinel-UserWorkbook",
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
